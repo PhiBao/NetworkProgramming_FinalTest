@@ -1,4 +1,4 @@
-package server;
+package model;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Iterator;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -15,6 +14,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import util.MySQLConnection;
+import util.CheckCellNull;
 
 public class RoomsPost {
 
@@ -53,7 +53,7 @@ public class RoomsPost {
 
 					switch (columnIndex) {
 					case 1:
-						check = isCellEmpty(cell);
+						check = CheckCellNull.isCellEmpty(cell);
 						ps.setString(1, df.formatCellValue(cell));
 						break;
 					default:
@@ -90,22 +90,6 @@ public class RoomsPost {
 
 			MySQLConnection.disconnect(conn);
 		}
-	}
-
-	private boolean isCellEmpty(final Cell cell) {
-		if (cell == null) {
-			return true;
-		}
-
-		if (cell.getCellType() == CellType.BLANK) {
-			return true;
-		}
-
-		if (cell.getCellType() == CellType.STRING && cell.getStringCellValue().trim().isEmpty()) {
-			return true;
-		}
-
-		return false;
 	}
 
 }

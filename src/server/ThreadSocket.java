@@ -1,6 +1,11 @@
 package server;
 
 import java.net.Socket;
+
+import model.GetResult;
+import model.OfficersPost;
+import model.RoomsPost;
+
 import java.io.*;
 
 public class ThreadSocket extends Thread {
@@ -18,9 +23,10 @@ public class ThreadSocket extends Thread {
 
 	public void run() {
 		try {
-			String destinationDir = "C:\\Users\\Admin\\Documents\\Test\\test.xlsx";
+			String destinationDir = "C:\\Users\\Admin\\Documents\\myCode\\Test\\test.xlsx";
+			String resultDir = "C:\\Users\\Admin\\Documents\\myCode\\Test\\result.xlsx";
+			
 			// Tao luong nhan du lieu tu client
-
 			DataInputStream din = new DataInputStream(socket.getInputStream());
 			FileOutputStream dout = new FileOutputStream(new File(destinationDir));
 			byte[] bytes = new byte[16 * 1024];
@@ -36,6 +42,8 @@ public class ThreadSocket extends Thread {
 				officersPost.insertListOfficers(destinationDir);
 				RoomsPost roomsPost = new RoomsPost();
 				roomsPost.insertListRooms(destinationDir);
+				GetResult getResult = new GetResult();
+				getResult.export(resultDir);
 
 			} catch (Exception e) {
 				din.close();
